@@ -1,47 +1,142 @@
-output "data_lake_bucket" {
-  value = aws_s3_bucket.data_lake.bucket
+# ==================================================
+# S3 DATA LAKE OUTPUTS
+# ==================================================
+output "s3_data_lake_bucket" {
+  description = "Main data lake bucket"
+  value       = aws_s3_bucket.data_lake.bucket
 }
 
-output "raw_data_bucket" {
-  value = aws_s3_bucket.raw.bucket
+output "s3_logs_bucket" {
+  description = "Logs bucket"
+  value       = aws_s3_bucket.logs.bucket
 }
 
-output "processed_data_bucket" {
-  value = aws_s3_bucket.processed.bucket
+output "s3_artifacts_bucket" {
+  description = "Artifacts bucket (Glue, EMR, CI/CD)"
+  value       = aws_s3_bucket.artifacts.bucket
 }
 
-output "rds_endpoint_main" {
-  value = aws_db_instance.main.endpoint
+# ==================================================
+# AWS GLUE OUTPUTS
+# ==================================================
+output "glue_job_bronze_to_silver" {
+  value = aws_glue_job.bronze_to_silver.name
 }
 
-output "rds_port_main" {
-  value = aws_db_instance.main.port
+output "glue_job_silver_to_gold" {
+  value = aws_glue_job.silver_to_gold.name
 }
 
-output "rds_endpoint_replica" {
-  value = aws_db_instance.replica.endpoint
+output "glue_job_cleaning" {
+  value = aws_glue_job.data_cleaning.name
 }
 
-output "glue_ingestion_job" {
-  value = aws_glue_job.ingestion.name
+output "glue_database" {
+  value = aws_glue_catalog_database.main.name
 }
 
-output "glue_transformation_job" {
-  value = aws_glue_job.transformation.name
+output "glue_crawler" {
+  value = aws_glue_crawler.main.name
 }
 
-output "lambda_trigger_ingestion" {
+# ==================================================
+# EMR OUTPUTS
+# ==================================================
+output "emr_cluster_id" {
+  value = aws_emr_cluster.data_cluster.id
+}
+
+output "emr_cluster_name" {
+  value = aws_emr_cluster.data_cluster.name
+}
+
+output "emr_master_instance" {
+  value = aws_emr_cluster.data_cluster.master_instance_type
+}
+
+output "emr_worker_instance" {
+  value = aws_emr_cluster.data_cluster.core_instance_type
+}
+
+output "emr_log_uri" {
+  value = aws_emr_cluster.data_cluster.log_uri
+}
+
+# ==================================================
+# RDS OUTPUTS
+# ==================================================
+output "rds_postgres_endpoint" {
+  value = aws_db_instance.postgres.endpoint
+}
+
+output "rds_postgres_port" {
+  value = aws_db_instance.postgres.port
+}
+
+output "rds_postgres_db" {
+  value = aws_db_instance.postgres.db_name
+}
+
+output "rds_mysql_endpoint" {
+  value = aws_db_instance.mysql.endpoint
+}
+
+output "rds_mysql_port" {
+  value = aws_db_instance.mysql.port
+}
+
+output "rds_mysql_db" {
+  value = aws_db_instance.mysql.db_name
+}
+
+# ==================================================
+# LAMBDA OUTPUTS
+# ==================================================
+output "lambda_ingestion" {
   value = aws_lambda_function.ingestion.function_name
 }
 
-output "emr_cluster_main" {
-  value = aws_emr_cluster.main.name
+output "lambda_event_processor" {
+  value = aws_lambda_function.event_processor.function_name
 }
 
-output "iam_role_pipeline" {
-  value = aws_iam_role.pipeline_role.arn
-}
-
-output "sns_alert_topic" {
+# ==================================================
+# EVENT DRIVEN
+# ==================================================
+output "sns_topic_alerts" {
   value = aws_sns_topic.alerts.arn
+}
+
+output "sqs_queue_ingestion" {
+  value = aws_sqs_queue.ingestion.id
+}
+
+# ==================================================
+# IAM ROLES
+# ==================================================
+output "iam_role_glue" {
+  value = aws_iam_role.glue_role.arn
+}
+
+output "iam_role_emr" {
+  value = aws_iam_role.emr_role.arn
+}
+
+output "iam_role_lambda" {
+  value = aws_iam_role.lambda_role.arn
+}
+
+# ==================================================
+# CLOUDWATCH
+# ==================================================
+output "cw_log_group_glue" {
+  value = aws_cloudwatch_log_group.glue.name
+}
+
+output "cw_log_group_lambda" {
+  value = aws_cloudwatch_log_group.lambda.name
+}
+
+output "cw_log_group_emr" {
+  value = aws_cloudwatch_log_group.emr.name
 }
