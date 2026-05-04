@@ -13,5 +13,20 @@
       "description": "Replace the TEST Glue script with the real Spark ETL script used by the Glue job."
     },
     "notes": "Upload the production Glue script to the same S3 key so aws_glue_job.etl continues to reference the correct script_location without Terraform changes."
+  },
+   {
+    "service": "glue",
+    "resource_name": "aws_s3_object.glue_test_script",
+    "terraform_output_refs": {
+      "bucket": "scripts_bucket_name",
+      "key": "glue_test_script_s3"
+    },
+    "action": "replace_artifact",
+    "artifact": {
+      "type": "script",
+      "test_s3_path": "s3://${scripts_bucket_name}/${glue_test_script_s3}",
+      "description": "Replace the TEST Glue script with the real Spark ETL script used by the Glue job."
+    },
+    "notes": "Upload the production Glue script to the same S3 key so aws_glue_job.etl continues to reference the correct script_location without Terraform changes."
   }
 ]
